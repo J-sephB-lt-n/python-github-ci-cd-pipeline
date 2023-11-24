@@ -25,7 +25,17 @@ jobs:
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          if [ -n "$(git status --porcelain)" ]; then git commit -a -m "style() Auto-formatted code"; else echo "No changes to commit!"; fi
+          (
+            if [ -n "$(git status --porcelain)" ]; 
+              then 
+                TEMP_BRANCH_NAME=github_actions_bot_$(date '+%Y_%m_%d_%H_%M_%S')
+                git checkout -b $TEMP_BRANCH_NAME
+                git commit -a -m "style() github-actions[bot] auto-formatted code"
+                gh pr create --title 'auto pull request by github-actions[bot]'
+              else 
+                echo "No changes to commit!"
+            fi
+          )
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
