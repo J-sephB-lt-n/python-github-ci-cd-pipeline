@@ -31,7 +31,9 @@ jobs:
                 TEMP_BRANCH_NAME=github_actions_bot_$(date '+%Y_%m_%d_%H_%M_%S')
                 git checkout -b $TEMP_BRANCH_NAME
                 git commit -a -m "style() github-actions[bot] auto-formatted code"
-                gh pr create --title 'auto pull request by github-actions[bot]'
+                git push --set-upstream origin $TEMP_BRANCH_NAME
+                gh pr create --title 'code auto-formatting' --body 'auto pull request by github-actions[bot]'
+                gh pr merge --auto
               else 
                 echo "No changes to commit!"
             fi
